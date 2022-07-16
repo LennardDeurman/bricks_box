@@ -5,6 +5,7 @@ part '{{name.snakeCase()}}.g.dart';
 @CopyWith(){{/use_copy_with}}
 class {{name.pascalCase()}} {{#use_equatable}}extends Equatable{{/use_equatable}} {
   {{class_props}}
+  
   const {{name.pascalCase()}}({{constructor}});
 
   {{#use_equatable}}@override

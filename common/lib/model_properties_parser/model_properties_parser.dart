@@ -12,11 +12,21 @@ class ModelPropertiesParser {
   }
 
   String _buildProps(List<ModelProperty> props) {
-    return props.map((prop) => prop.name).join(',\n');
+    final propsStr = props.map((prop) => prop.name).join(',\n');
+    if (propsStr.isNotEmpty) return '$propsStr,';
+    return '';
   }
 
   String _buildConstructorBody(List<ModelProperty> props) {
-    return props.map((prop) => 'this.${prop.name}').join(', ');
+    final constructorBody = props.map((prop) {
+      final propStr = 'this.${prop.name}';
+      if (prop.isOptional) {
+        return propStr;
+      } else {
+        return 'required $propStr';
+      }
+    }).join(', ');
+    return '{$constructorBody}';
   }
 
   ModelPropertiesResult? parse() {
