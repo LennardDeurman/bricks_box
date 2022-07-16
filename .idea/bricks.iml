@@ -6,6 +6,9 @@
       <excludeFolder url="file://$MODULE_DIR$/templates/make_class/hooks/build" />
       <excludeFolder url="file://$MODULE_DIR$/templates/make_class/hooks/.dart_tool" />
       <excludeFolder url="file://$MODULE_DIR$/templates/make_class/hooks/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/common/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/common/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/common/build" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

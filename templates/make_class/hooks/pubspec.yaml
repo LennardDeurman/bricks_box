@@ -8,5 +8,5 @@ dependencies:
   common:
     git:
       url: git@github.com:LennardDeurman/bricks_box.git
-      ref: master
+      ref: develop
       path: common
