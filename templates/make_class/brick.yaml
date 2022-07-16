@@ -23,6 +23,22 @@ environment:
 vars:
   name:
     type: string
-    description: Your name
-    default: Dash
-    prompt: What is your name?
+    description: The name of the class
+    prompt: What is the classname?
+  use_equatable:
+    type: boolean
+    default: true
+    description: If we should use equatable
+    prompt: Should we use equatable?
+  use_copy_with:
+    type: boolean
+    default: true
+    description: Should we use copyWith
+    prompt: Should we use copyWith?
+  generate_copy_with_null:
+    type: boolean
+    default: true
+  props:
+    type: string
+    description: define type props of the class
+

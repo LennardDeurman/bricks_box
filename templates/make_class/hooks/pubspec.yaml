@@ -1,0 +1,12 @@
+name: hooks
+
+environment:
+  sdk: ">=2.12.0 <3.0.0"
+
+dependencies:
+  mason: any
+  common:
+    git:
+      url: git@github.com:LennardDeurman/bricks_box.git
+      ref: master
+      path: common
