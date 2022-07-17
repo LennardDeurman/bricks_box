@@ -11,9 +11,9 @@ class DtoPropertiesParser extends ModelPropertiesParser {
     return props.map((prop) {
       String keyDefinition;
       if (prop.defaultValue != null) {
-        keyDefinition = '@JsonKey(name: ${prop.key}, defaultValue: ${prop.defaultValue});';
+        keyDefinition = '@JsonKey(name: \'${prop.key}\', defaultValue: ${prop.defaultValue});';
       } else {
-        keyDefinition = '@JsonKey(name: ${prop.key});';
+        keyDefinition = '@JsonKey(name: \'${prop.key})\';';
       }
       final fieldDefinition = 'final ${prop.type} ${prop.name};';
       return '$keyDefinition\n$fieldDefinition';
@@ -24,9 +24,12 @@ class DtoPropertiesParser extends ModelPropertiesParser {
   String _buildConstructorBody(List<ModelProperty> props) {
     final constructorBody = props.map((prop) {
       final propStr = 'this.${prop.name}';
-      return 'required $propStr';
+      if (!prop.isOptional || prop.defaultValue != null) {
+        return 'required $propStr';
+      }
+      return propStr;
     }).join(', ');
-    return '{$constructorBody}';
+    return '{$constructorBody,}';
   }
 
   @override
@@ -42,11 +45,11 @@ class DtoPropertiesParser extends ModelPropertiesParser {
 
       final defaultValueStartIndex = right.indexOf('=');
       final hasDefault = defaultValueStartIndex > -1;
-      final keyStartIndex = right.indexOf('/');
+      final keyStartIndex = right.indexOf('/') + 1;
 
       final key = right.substring(keyStartIndex, hasDefault ? defaultValueStartIndex : right.length);
-      final name = right.substring(0, keyStartIndex);
-      final defaultValue = hasDefault ? right.substring(defaultValueStartIndex, right.length) : null;
+      final name = right.substring(0, keyStartIndex - 1);
+      final defaultValue = hasDefault ? right.substring(defaultValueStartIndex + 1, right.length) : null;
 
       final prop = DtoProperty(
         isOptional: isOptional,
@@ -57,6 +60,9 @@ class DtoPropertiesParser extends ModelPropertiesParser {
       );
       props.add(prop);
     }
+
+    orderProps(props);
+
     return ClassStructureResult(
       classFields: _buildClassFields(props),
       constructorBody: _buildConstructorBody(props),

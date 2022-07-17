@@ -20,17 +20,24 @@ class ModelPropertiesParser {
   String buildConstructorBody(List<ModelProperty> props) {
     final constructorBody = props.map((prop) {
       final propStr = 'this.${prop.name}';
-      String result;
-      if (prop.isOptional) {
+      String result = '';
+      if (prop.defaultValue != null) {
+        result = '$propStr=${prop.defaultValue}';
+      } else if (prop.isOptional) {
         result = propStr;
       } else if (prop.defaultValue == null) {
         result = 'required $propStr';
       } else {
-        result = '$propStr=${prop.defaultValue}';
+        result = propStr;
       }
+
       return result;
-    }).join(', ');
+    }).join(',');
     return '{$constructorBody,}';
+  }
+  
+  void orderProps(List<ModelProperty> props) {
+    return props.sort((propA, propB) => propA.compareTo(propB));
   }
 
   ClassStructureResult? parse() {
@@ -59,6 +66,9 @@ class ModelPropertiesParser {
       );
       props.add(prop);
     }
+    
+    orderProps(props);
+    
     return ClassStructureResult(
       classFields: buildClassFields(props),
       constructorBody: buildConstructorBody(props),
