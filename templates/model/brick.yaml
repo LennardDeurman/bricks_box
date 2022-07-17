@@ -1,5 +1,5 @@
-name: stateless_widget
-description: A new brick created with the Mason CLI.
+name: model
+description: Creates a model class
 
 # The following defines the version and build number for your brick.
 # A version number is three numbers separated by dots, like 1.2.34
@@ -23,6 +23,22 @@ environment:
 vars:
   name:
     type: string
-    description: Your name
-    default: Dash
-    prompt: What is your name?
+    description: The name of the class
+    prompt: What is the classname?
+  use_equatable:
+    type: boolean
+    default: true
+    description: If we should use equatable
+    prompt: Should we use equatable?
+  use_copy_with:
+    type: boolean
+    default: true
+    description: Should we use copyWith
+    prompt: Should we use copyWith?
+  generate_copy_with_null:
+    type: boolean
+    default: true
+  props:
+    type: string
+    description: define type props of the class
+

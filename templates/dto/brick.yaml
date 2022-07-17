@@ -1,5 +1,5 @@
-name: stateful_widget
-description: A new brick created with the Mason CLI.
+name: model
+description: Creates a model class
 
 # The following defines the version and build number for your brick.
 # A version number is three numbers separated by dots, like 1.2.34
@@ -23,6 +23,16 @@ environment:
 vars:
   name:
     type: string
-    description: Your name
-    default: Dash
-    prompt: What is your name?
+    description: The name of the class
+    prompt: What is the classname?
+  from_json:
+    type: bool,
+    description: Should a from_json constructor be generated
+  to_json:
+    type: bool,
+    description: Should a to_json constructor be generated
+
+  props:
+    type: string
+    description: define type props of the class
+

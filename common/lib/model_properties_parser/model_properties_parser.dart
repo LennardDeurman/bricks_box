@@ -1,37 +1,43 @@
-import 'package:common/model_properties_parser/model_properties_result.dart';
+import 'package:common/class_structure_result.dart';
 
 import 'model_property.dart';
 
 class ModelPropertiesParser {
-  final String _input;
+  final String input;
 
-  ModelPropertiesParser(this._input);
+  ModelPropertiesParser(this.input);
 
-  String _buildClassFields(List<ModelProperty> props) {
+  String buildClassFields(List<ModelProperty> props) {
     return props.map((prop) => 'final ${prop.type} ${prop.name};').join('\n');
   }
 
-  String _buildProps(List<ModelProperty> props) {
+  String buildProps(List<ModelProperty> props) {
     final propsStr = props.map((prop) => prop.name).join(',\n');
     if (propsStr.isNotEmpty) return '$propsStr,';
     return '';
   }
 
-  String _buildConstructorBody(List<ModelProperty> props) {
+  String buildConstructorBody(List<ModelProperty> props) {
     final constructorBody = props.map((prop) {
       final propStr = 'this.${prop.name}';
+      String result;
       if (prop.isOptional) {
-        return propStr;
+        result = propStr;
       } else {
-        return 'required $propStr';
+        result = 'required $propStr';
       }
+
+      if (prop.defaultValue != null) {
+        return '$result=${prop.defaultValue}';
+      }
+      return result;
     }).join(', ');
     return '{$constructorBody}';
   }
 
-  ModelPropertiesResult? parse() {
-    if (_input.isEmpty) return null;
-    final items = _input.split(',');
+  ClassStructureResult? parse() {
+    if (input.isEmpty) return null;
+    final items = input.split(',');
     List<ModelProperty> props = [];
     for (var pair in items) {
       final parts = pair.split(':');
@@ -55,10 +61,10 @@ class ModelPropertiesParser {
       );
       props.add(prop);
     }
-    return ModelPropertiesResult(
-      classFields: _buildClassFields(props),
-      constructorBody: _buildConstructorBody(props),
-      propsBody: _buildProps(props),
+    return ClassStructureResult(
+      classFields: buildClassFields(props),
+      constructorBody: buildConstructorBody(props),
+      propsBody: buildProps(props),
     );
   }
 }

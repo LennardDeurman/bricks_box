@@ -3,12 +3,15 @@
   <component name="NewModuleRootManager" inherit-compiler-output="true">
     <exclude-output />
     <content url="file://$MODULE_DIR$">
-      <excludeFolder url="file://$MODULE_DIR$/templates/make_class/hooks/build" />
-      <excludeFolder url="file://$MODULE_DIR$/templates/make_class/hooks/.dart_tool" />
-      <excludeFolder url="file://$MODULE_DIR$/templates/make_class/hooks/.pub" />
       <excludeFolder url="file://$MODULE_DIR$/common/.dart_tool" />
       <excludeFolder url="file://$MODULE_DIR$/common/.pub" />
       <excludeFolder url="file://$MODULE_DIR$/common/build" />
+      <excludeFolder url="file://$MODULE_DIR$/templates/model/hooks/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/templates/model/hooks/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/templates/model/hooks/build" />
+      <excludeFolder url="file://$MODULE_DIR$/templates/dto/hooks/build" />
+      <excludeFolder url="file://$MODULE_DIR$/templates/dto/hooks/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/templates/dto/hooks/.pub" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
