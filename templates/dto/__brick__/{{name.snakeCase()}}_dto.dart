@@ -7,7 +7,7 @@ part '{{name.snakeCase()}}.g.dart';
 class {{name.pascalCase()}}Dto extends Equatable {
   {{class_props}}
 
-  const {{name.pascalCase()}}({{constructor}});
+  const {{name.pascalCase()}}Dto({{constructor}});
 
   @override
   List<Object?> get props => [{{equatable_props}}];
