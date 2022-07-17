@@ -1,5 +1,5 @@
-name: model
-description: Creates a model class
+name: dto
+description: Creates a dto class
 
 # The following defines the version and build number for your brick.
 # A version number is three numbers separated by dots, like 1.2.34
@@ -26,10 +26,10 @@ vars:
     description: The name of the class
     prompt: What is the classname?
   from_json:
-    type: bool,
+    type: boolean
     description: Should a from_json constructor be generated
   to_json:
-    type: bool,
+    type: boolean
     description: Should a to_json constructor be generated
 
   props:

@@ -27,7 +27,7 @@
     },
     {
       "name": "common",
-      "rootUri": "file:///Users/l.d.deurman/Desktop/flutter/.pub-cache/git/bricks_box-9c5bfa2825e2f87befa14c49f87282ca98628a6e/common",
+      "rootUri": "file:///Users/l.d.deurman/Desktop/flutter/.pub-cache/git/bricks_box-635c00826d0a43f1d8db77c50527bf416d2435b5/common",
       "packageUri": "lib/",
       "languageVersion": "2.16"
     },
@@ -140,7 +140,7 @@
       "languageVersion": "2.12"
     }
   ],
-  "generated": "2022-07-17T00:38:10.883197Z",
+  "generated": "2022-07-17T12:31:34.473880Z",
   "generator": "pub",
   "generatorVersion": "2.17.6"
 }

@@ -23,16 +23,14 @@ class ModelPropertiesParser {
       String result;
       if (prop.isOptional) {
         result = propStr;
-      } else {
+      } else if (prop.defaultValue == null) {
         result = 'required $propStr';
-      }
-
-      if (prop.defaultValue != null) {
-        return '$result=${prop.defaultValue}';
+      } else {
+        result = '$propStr=${prop.defaultValue}';
       }
       return result;
     }).join(', ');
-    return '{$constructorBody}';
+    return '{$constructorBody,}';
   }
 
   ClassStructureResult? parse() {
