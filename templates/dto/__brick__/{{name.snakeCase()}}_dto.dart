@@ -14,7 +14,7 @@ class {{name.pascalCase()}}Dto extends Equatable {
 
   {{#from_json}}factory {{name.pascalCase()}}Dto.fromJson(Map<String, dynamic> json) => _${{name.pascalCase()}}DtoFromJson(json);{{/from_json}}
 
-  {{#to_json}}Map<String, dynamic> toJson() => _${{name.pascalCase()}}ToJson(this);{{/to_json}}
+  {{#to_json}}Map<String, dynamic> toJson() => _${{name.pascalCase()}}DtoToJson(this);{{/to_json}}
 
 }
 

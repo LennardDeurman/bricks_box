@@ -11,9 +11,9 @@ class DtoPropertiesParser extends ModelPropertiesParser {
     return props.map((prop) {
       String keyDefinition;
       if (prop.defaultValue != null) {
-        keyDefinition = '@JsonKey(name: \'${prop.key}\', defaultValue: ${prop.defaultValue});';
+        keyDefinition = "@JsonKey(name: '${prop.key}', defaultValue: ${prop.defaultValue});";
       } else {
-        keyDefinition = '@JsonKey(name: \'${prop.key})\';';
+        keyDefinition = "@JsonKey(name: ${prop.key})";
       }
       final fieldDefinition = 'final ${prop.type} ${prop.name};';
       return '$keyDefinition\n$fieldDefinition';
