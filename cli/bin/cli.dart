@@ -20,6 +20,8 @@ void main(List<String> arguments) async {
 
   for (FileSystemEntity item in items) {
     if (item.path.endsWith(Constants.modelsEnding)) {
+      print('Found .models file ${item.path}');
+
       final config = await loadYamlToMap(item.path);
       final modelBuilder = ModelBuilder(config);
       final forcedDelete = config.get<bool>(BrickArguments.forcedDelete, false);
@@ -29,6 +31,8 @@ void main(List<String> arguments) async {
 
       futures.add(modelBuilder.run());
     } else if (item.path.endsWith(Constants.dtoEnding)) {
+      print('Found .dto file ${item.path}');
+
       final config = await loadYamlToMap(item.path);
       final dtoBuilder = DtoBuilder(config);
       final forcedDelete = config.get<bool>(BrickArguments.forcedDelete, false);
@@ -43,6 +47,12 @@ void main(List<String> arguments) async {
   await Future.wait(futures).then((_) async {
     final deleteFutures = toBeDeletedEntities.map((e) => e.delete());
     await Future.wait(deleteFutures);
+
+    await Process.run(
+      'dart',
+      ['format', '.'],
+      runInShell: true,
+    );
   });
 }
 

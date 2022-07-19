@@ -1,7 +1,10 @@
-import 'parser/yaml_parser.dart';
+import 'package:yaml/yaml.dart';
+
+import 'yaml_parser/yaml_parser.dart';
 
 class QueryConverter {
-  static String convert(List<MapEntry<String, String>> entries) {
+  static String convert(YamlMap yamlMap) {
+    final entries = yamlMap.entries;
     return entries.map((mapEntry) {
       final res = YamlParser.parse(mapEntry.key, mapEntry.value);
       var str = '${res.className}:${res.name}';

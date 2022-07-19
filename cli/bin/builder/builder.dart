@@ -1,17 +1,18 @@
 import 'dart:io';
 
 import 'package:mason/mason.dart';
+import 'package:yaml/yaml.dart';
 
 abstract class Builder {
   final String brickPath;
-  final Map<String, dynamic> config;
+  final Map<dynamic, dynamic> config;
 
   Builder({
     required this.config,
     required this.brickPath,
   });
 
-  Map<String, dynamic> toInputMap(String modelName, Map<String, dynamic> yamlMap);
+  Map<String, dynamic> toInputMap(String modelName, YamlMap yamlMap);
 
   Future<void> run() async {
     final brick = Brick.path(brickPath);
@@ -22,7 +23,7 @@ abstract class Builder {
     List<Future<void>> items = [];
 
     for (String modelName in config.keys) {
-      final subMap = config[modelName] as Map<String, dynamic>;
+      final subMap = config[modelName] as YamlMap;
       final inputMap = toInputMap(modelName, subMap);
       items.add(
         generator.generate(
