@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'builder/builder.dart';
+import 'builder/dto_builder.dart';
 import 'builder/model_builder.dart';
 import 'map_extension.dart';
 import 'constants/brick_arguments.dart';
@@ -27,6 +28,15 @@ void main(List<String> arguments) async {
       }
 
       futures.add(modelBuilder.run());
+    } else if (item.path.endsWith(Constants.dtoEnding)) {
+      final config = await loadYamlToMap(item.path);
+      final dtoBuilder = DtoBuilder(config);
+      final forcedDelete = config.get<bool>(BrickArguments.forcedDelete, false);
+      if (forcedDelete || destructAllFiles) {
+        toBeDeletedEntities.add(item);
+      }
+
+      futures.add(dtoBuilder.run());
     }
   }
 
