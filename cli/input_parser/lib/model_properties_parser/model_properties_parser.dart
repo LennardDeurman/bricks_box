@@ -34,7 +34,7 @@ class ModelPropertiesParser {
     }).join(',');
     return '{$constructorBody,}';
   }
-  
+
   void orderProps(List<ModelProperty> props) {
     return props.sort((propA, propB) => propA.compareTo(propB));
   }
@@ -65,9 +65,9 @@ class ModelPropertiesParser {
       );
       props.add(prop);
     }
-    
+
     orderProps(props);
-    
+
     return ClassStructureResult(
       classFields: buildClassFields(props),
       constructorBody: buildConstructorBody(props),

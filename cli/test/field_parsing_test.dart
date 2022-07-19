@@ -16,7 +16,8 @@ void main() {
   String? _determineKey(String value) {
     if (value.contains('/')) {
       final defaultSignIndex = value.indexOf('=');
-      return value.substring(value.indexOf('/') + 1, defaultSignIndex > -1 ? defaultSignIndex : value.length);
+      return value.substring(value.indexOf('/') + 1,
+          defaultSignIndex > -1 ? defaultSignIndex : value.length);
     }
 
     return null;

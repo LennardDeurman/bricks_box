@@ -5,10 +5,11 @@ import '../constants/global.dart';
 import '../map_extension.dart';
 import '../query_converter.dart';
 import 'builder.dart';
+import 'package:pre_hooks/pre_hooks.dart';
 
 class DtoBuilder extends Builder {
-
-  DtoBuilder (Map<dynamic, dynamic> config) : super(config: config, brickPath: Constants.brickDtoLocation);
+  DtoBuilder(Map<dynamic, dynamic> config)
+      : super(config: config, brickPath: Constants.brickDtoLocation);
 
   @override
   Map<String, dynamic> toInputMap(String modelName, YamlMap yamlMap) {
@@ -16,17 +17,12 @@ class DtoBuilder extends Builder {
     final toJson = yamlMap.get<bool>(BrickArguments.toJson, true);
 
     final props = yamlMap[BrickArguments.props] as YamlMap;
-    print(props);
 
-    final propsStr = QueryConverter.convert(props);
-    print(propsStr);
-
-    return {
+    return DtoInputConverter({
       BrickArguments.name: modelName,
       BrickArguments.fromJson: fromJson,
       BrickArguments.toJson: toJson,
       BrickArguments.props: QueryConverter.convert(props),
-    };
+    }).convert();
   }
-
 }

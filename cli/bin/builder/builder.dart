@@ -19,7 +19,6 @@ abstract class Builder {
     final generator = await MasonGenerator.fromBrick(brick);
     final target = DirectoryGeneratorTarget(Directory.current);
 
-
     List<Future<void>> items = [];
 
     for (String modelName in config.keys) {
@@ -35,5 +34,4 @@ abstract class Builder {
 
     await Future.wait(items);
   }
-
 }

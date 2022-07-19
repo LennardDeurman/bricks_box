@@ -27,5 +27,4 @@ class ModelProperty implements Comparable<ModelProperty> {
   int compareTo(ModelProperty other) {
     return orderIndex.compareTo(other.orderIndex);
   }
-
 }

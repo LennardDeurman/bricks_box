@@ -17,7 +17,6 @@ void main(List<String> arguments) async {
 
   List<FileSystemEntity> toBeDeletedEntities = [];
 
-
   for (FileSystemEntity item in items) {
     if (item.path.endsWith(Constants.modelsEnding)) {
       print('Found .models file ${item.path}');
@@ -55,4 +54,3 @@ void main(List<String> arguments) async {
     );
   });
 }
-
