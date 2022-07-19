@@ -1,0 +1,7 @@
+extension MapExtension on Map<String, dynamic> {
+  T get<T>(String key, T defaultValue) {
+    final hasField = containsKey(key);
+    if (hasField) return this[key] ?? defaultValue;
+    return defaultValue;
+  }
+}
