@@ -2,7 +2,7 @@ import 'converter.dart';
 import 'package:input_parser/input_parser.dart';
 
 class DtoInputConverter extends Converter {
-  DtoInputConverter(super.original);
+  DtoInputConverter(Map<String, dynamic> original) : super(original);
 
   @override
   Map<String, dynamic> convert() {
@@ -38,5 +38,4 @@ class DtoInputConverter extends Converter {
       'json_constructor': jsonConstructor,
     };
   }
-
 }

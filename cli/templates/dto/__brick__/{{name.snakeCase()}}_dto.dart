@@ -1,11 +1,11 @@
 import 'package:equatable/equatable.dart';
 
-part '{{name.snakeCase()}}.g.dart';
+part '{{name.snakeCase()}}_dto.g.dart';
 
 @JsonSerializable({{json_constructor}})
 @CopyWith(generateCopyWithNull:true)
 class {{name.pascalCase()}}Dto extends Equatable {
-  {{class_props}}
+  {{{class_props}}}
 
   const {{name.pascalCase()}}Dto({{constructor}});
 

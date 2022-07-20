@@ -2,7 +2,7 @@ import 'converter.dart';
 import 'package:input_parser/input_parser.dart';
 
 class ModelInputConverter extends Converter {
-  ModelInputConverter(super.original);
+  ModelInputConverter(Map<String, dynamic> original) : super(original);
 
   @override
   Map<String, dynamic> convert() {
@@ -27,5 +27,4 @@ class ModelInputConverter extends Converter {
       'class_props': classFields,
     };
   }
-
 }
