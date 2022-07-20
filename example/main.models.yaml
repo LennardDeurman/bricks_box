@@ -1,0 +1,11 @@
+user:
+  props:
+    userId: String?
+    value: String?
+  use_copy_with: true #all defaults to true
+  copy_with_null: true
+  equatable: true
+
+account:
+  props:
+    userId: int/user_id=0

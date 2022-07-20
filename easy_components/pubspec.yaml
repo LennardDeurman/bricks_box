@@ -1,5 +1,5 @@
-name: cli
-description: A simple command-line application.
+name: easy_components
+description: Makes it easier to create classes and DTOs
 version: 1.0.0
 publish_to: none
 # homepage: https://www.example.com
@@ -13,6 +13,9 @@ dependencies:
   mason: ^0.1.0-dev.28
   pre_hooks:
     path: pre_hooks
+
+executables:
+  easy_components:
 
 dev_dependencies:
   lints: ^1.0.0

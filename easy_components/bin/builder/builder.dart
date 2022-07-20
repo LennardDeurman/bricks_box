@@ -15,8 +15,12 @@ abstract class Builder {
   Map<String, dynamic> toInputMap(String modelName, YamlMap yamlMap);
 
   Future<void> run() async {
-    final brick = Brick.path(brickPath);
-    final generator = await MasonGenerator.fromBrick(brick);
+    final generator = await MasonGenerator.fromBrick(Brick.git(
+      GitPath(
+        'https://github.com/LennardDeurman/bricks_box',
+        path: 'cli/$brickPath',
+      ),
+    ));
     final target = DirectoryGeneratorTarget(Directory.current);
 
     List<Future<void>> items = [];

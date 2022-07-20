@@ -2,9 +2,8 @@ user:
   props:
     userId: String?/user_id
     value: String?/value
-  use_copy_with: true
-  copy_with_null: true
-  equatable: true
+  from_json: true #defaults to true
+  to_json: true #defaults to true
 
 account:
   props:
