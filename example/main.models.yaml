@@ -8,4 +8,4 @@ user:
 
 account:
   props:
-    userId: int/user_id=0
+    userId: int=0

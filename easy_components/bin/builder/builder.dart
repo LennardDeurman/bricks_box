@@ -18,7 +18,7 @@ abstract class Builder {
     final generator = await MasonGenerator.fromBrick(Brick.git(
       GitPath(
         'https://github.com/LennardDeurman/bricks_box',
-        path: 'cli/$brickPath',
+        path: 'easy_components/$brickPath',
       ),
     ));
     final target = DirectoryGeneratorTarget(Directory.current);
