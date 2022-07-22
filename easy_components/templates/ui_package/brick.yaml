@@ -1,0 +1,13 @@
+name: ui_package
+description: A ui package
+
+version: 0.1.0+1
+
+environment:
+  mason: ">=0.1.0-dev.26 <0.1.0"
+
+vars:
+  name:
+    type: string
+    description: prefix of the lib
+    prompt: What is the prefix?

@@ -1,0 +1,30 @@
+name: cc_domain
+version: 0.0.1
+publish_to: none
+
+environment:
+  sdk: ">=2.17.6 <3.0.0"
+  flutter: ">=3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  get_it: ^7.2.0
+  equatable: ^2.0.3
+
+  # Internal packages
+  cc_data:
+    path: ../cc_data
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  mockito: 5.1.0
+  copy_with_extension_gen: ^4.0.1
+  build_runner: ^2.1.8
+  pinch_lints:
+    git:
+      url: git@bitbucket.org:justpinch/pinch-lints.git
+      ref: 1.0.0
+
+flutter:

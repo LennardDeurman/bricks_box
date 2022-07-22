@@ -1,0 +1,31 @@
+name: cc_storage
+version: 0.0.1
+publish_to: none
+
+environment:
+  sdk: ">=2.17.6 <3.0.0"
+  flutter: ">=3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  get_it: ^7.1.3
+  flutter_secure_storage: ^4.2.0
+  json_serializable: ^6.3.1
+  copy_with_extension: ^4.0.2
+  shared_preferences: ^2.0.8
+  rxdart: ^0.27.1
+  equatable: ^2.0.3
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  build_runner: ^2.1.8
+  copy_with_extension_gen: ^4.0.1
+  mockito: ^5.2.0
+  pinch_lints:
+    git:
+      url: git@bitbucket.org:justpinch/pinch-lints.git
+      ref: 1.0.0
+
+flutter:

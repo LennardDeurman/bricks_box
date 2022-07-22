@@ -1,0 +1,22 @@
+name: cc_ui
+version: 0.0.1
+publish_to: none
+
+environment:
+  sdk: ">=2.17.6 <3.0.0"
+  flutter: ">=3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  build_runner: ^2.1.8
+  pinch_lints:
+    git:
+      url: git@bitbucket.org:justpinch/pinch-lints.git
+      ref: 1.0.0
+
+flutter:
