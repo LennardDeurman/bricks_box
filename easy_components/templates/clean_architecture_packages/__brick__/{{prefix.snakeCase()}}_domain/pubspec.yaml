@@ -1,4 +1,4 @@
-name: cc_domain
+name: {{prefix.snakeCase()}}_domain
 version: 0.0.1
 publish_to: none
 
@@ -13,8 +13,8 @@ dependencies:
   equatable: ^2.0.3
 
   # Internal packages
-  cc_data:
-    path: ../cc_data
+  {{prefix.snakeCase()}}_data:
+    path: ../{{prefix.snakeCase()}}_data
 
 dev_dependencies:
   flutter_test:

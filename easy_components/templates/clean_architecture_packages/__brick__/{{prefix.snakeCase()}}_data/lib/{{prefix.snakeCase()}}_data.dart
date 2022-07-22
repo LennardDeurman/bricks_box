@@ -1,3 +1,3 @@
-library cc_data;
+library {{prefix.snakeCase()}}_data;
 
 export 'src/service_locator_data.dart';

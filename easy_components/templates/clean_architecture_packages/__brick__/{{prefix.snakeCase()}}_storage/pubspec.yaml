@@ -1,4 +1,4 @@
-name: cc_storage
+name: {{prefix.snakeCase()}}_storage
 version: 0.0.1
 publish_to: none
 

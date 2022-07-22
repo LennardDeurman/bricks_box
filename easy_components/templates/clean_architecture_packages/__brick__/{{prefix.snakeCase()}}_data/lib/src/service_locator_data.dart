@@ -3,7 +3,6 @@ import 'package:{{prefix.snakeCase()}}_domain/{{prefix.snakeCase()}}_domain.dart
 import 'package:{{prefix.snakeCase()}}_storage/{{prefix.snakeCase()}}_storage.dart';
 import 'package:get_it/get_it.dart';
 
-
 class ServiceLocatorData {
   static Future<void> init({
     bool isTest = false,

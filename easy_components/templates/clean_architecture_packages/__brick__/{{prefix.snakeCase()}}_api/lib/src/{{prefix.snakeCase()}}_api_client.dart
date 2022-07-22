@@ -5,7 +5,7 @@ part '{{prefix.snakeCase()}}_api_client.g.dart';
 
 @RestApi()
 abstract class {{prefix.pascalCase()}}ApiClient {
-  factory {{prefix.pascalCase()}}ApiClient(Dio dio) = _CcApiClient;
+  factory {{prefix.pascalCase()}}ApiClient(Dio dio) = _{{prefix.pascalCase()}}ApiClient;
 
   /* For example:
   @POST('/example') // @GET('/example')

@@ -7,7 +7,9 @@ import 'no_network_exception.dart';
 class NetworkInterceptor implements Interceptor {
   @override
   void onError(DioError error, ErrorInterceptorHandler handler) {
-    final data = error.response?.data is Map<String, dynamic> ? error.response?.data as Map<String, dynamic> : null;
+    final data = error.response?.data is Map<String, dynamic>
+        ? error.response?.data as Map<String, dynamic>
+        : null;
     handler.next(
       CcApiException(
         requestOptions: error.requestOptions,
@@ -18,12 +20,16 @@ class NetworkInterceptor implements Interceptor {
   }
 
   @override
-  void onRequest(RequestOptions options, RequestInterceptorHandler handler) async {
+  void onRequest(
+      RequestOptions options, RequestInterceptorHandler handler) async {
     final connectivityResult = await Connectivity().checkConnectivity();
-    if (connectivityResult == ConnectivityResult.none) return handler.reject(NoNetworkException(options));
+    if (connectivityResult == ConnectivityResult.none)
+      return handler.reject(NoNetworkException(options));
     return handler.next(options);
   }
 
   @override
-  void onResponse(Response<dynamic> response, ResponseInterceptorHandler handler) => handler.next(response);
+  void onResponse(
+          Response<dynamic> response, ResponseInterceptorHandler handler) =>
+      handler.next(response);
 }

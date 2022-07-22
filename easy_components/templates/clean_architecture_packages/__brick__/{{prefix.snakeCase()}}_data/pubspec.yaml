@@ -11,12 +11,12 @@ dependencies:
     sdk: flutter
 
   # Internal packages
-  cc_api:
-    path: ../cc_api
-  cc_storage:
-    path: ../cc_storage
-  cc_domain:
-    path: ../cc_domain
+  {{prefix.snakeCase()}}_api:
+    path: ../{{prefix.snakeCase()}}_api
+  {{prefix.snakeCase()}}_storage:
+    path: ../{{prefix.snakeCase()}}_storage
+  {{prefix.snakeCase()}}_domain:
+    path: ../{{prefix.snakeCase()}}_domain
 
   copy_with_extension: ^4.0.0
   build_runner: ^2.1.8
