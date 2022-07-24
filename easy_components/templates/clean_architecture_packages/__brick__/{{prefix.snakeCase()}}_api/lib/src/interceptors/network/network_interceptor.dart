@@ -11,7 +11,7 @@ class NetworkInterceptor implements Interceptor {
         ? error.response?.data as Map<String, dynamic>
         : null;
     handler.next(
-      CcApiException(
+      {{prefix.snakeCase()}}ApiException(
         requestOptions: error.requestOptions,
         data: data,
         response: error.response,

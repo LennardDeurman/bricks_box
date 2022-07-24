@@ -1,4 +1,4 @@
-name: cc_data
+name: {{prefix.snakeCase()}}_data
 version: 0.0.1
 publish_to: none
 

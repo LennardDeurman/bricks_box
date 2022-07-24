@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 
 import '../../{{prefix.snakeCase()}}_api_exception.dart';
 
-class AccessForbiddenException extends CcApiException {
+class AccessForbiddenException extends {{prefix.snakeCase()}}ApiException {
   AccessForbiddenException({
     required RequestOptions requestOptions,
     Map<String, dynamic>? data,
