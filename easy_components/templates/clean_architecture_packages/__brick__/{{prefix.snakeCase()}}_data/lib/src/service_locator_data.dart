@@ -16,5 +16,11 @@ class ServiceLocatorData {
     );
 
     await ServiceLocatorStorage.init(isTest: isTest);
+
+    serviceLocator.registerLazySingleton<AuthorizationManager>(
+          () => AuthorizationManagerImpl(
+        serviceLocator.get(),
+      ),
+    );
   }
 }
