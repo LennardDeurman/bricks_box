@@ -33,6 +33,8 @@ abstract class Builder {
     final suffix = config.get(BrickArguments.suffix, '');
 
     for (String modelName in config.keys) {
+      if ([BrickArguments.suffix].contains(modelName)) return;
+
       final subMap = config[modelName] as YamlMap;
 
       final completeModelName = '$modelName$suffix'; //We need to add the suffix here

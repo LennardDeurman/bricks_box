@@ -1,3 +1,5 @@
+suffix: Entity
+
 contact_info:
   props:
     contactThroughParents: bool=false
