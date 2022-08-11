@@ -5,6 +5,7 @@ import 'package:mason/mason.dart';
 import 'package:yaml/yaml.dart';
 
 import '../constants/brick_arguments.dart';
+import '../map_extension.dart';
 
 abstract class Builder {
   final String brickPath;
@@ -29,24 +30,30 @@ abstract class Builder {
     List<Future<void>> items = [];
 
     final classNames = config.keys.map((e) => e.toString().pascalCase).toList();
+    final suffix = config.get(BrickArguments.suffix, '');
 
     for (String modelName in config.keys) {
       final subMap = config[modelName] as YamlMap;
+
+      final completeModelName = '$modelName$suffix'; //We need to add the suffix here
 
       final props = subMap[BrickArguments.props] as YamlMap;
       Set<String> importedClasses = {};
 
       for (var entry in props.entries) {
         final typeDefinition = entry.value as String;
-        importedClasses.addAll(
-          classNames.where((className) {
-            return typeDefinition.contains(className);
-          }),
-        );
+
+        for (String className in classNames) {
+          final exists = typeDefinition.contains(className);
+          final completeClassName = '$className$suffix'.pascalCase; //Here suffix as well
+          if (exists) importedClasses.add(completeClassName);
+          typeDefinition.replaceAll(className, completeClassName);
+        }
       }
 
-      final inputMap = toInputMap(modelName, subMap);
+      final inputMap = toInputMap(completeModelName, subMap);
 
+      //No suffix needed since it was already handled
       inputMap[BrickArguments.imports] =
           importedClasses.map((className) => "import '${className.snakeCase}.dart'").join('\n');
 

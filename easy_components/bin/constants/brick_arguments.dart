@@ -8,4 +8,5 @@ class BrickArguments {
   static const name = 'name';
   static const forcedDelete = 'forced_delete';
   static const imports = 'imports';
+  static const suffix = 'suffix';
 }
