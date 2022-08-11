@@ -55,7 +55,7 @@ abstract class Builder {
 
       //No suffix needed since it was already handled
       inputMap[BrickArguments.imports] =
-          importedClasses.map((className) => "import '${className.snakeCase}.dart'").join('\n');
+          importedClasses.map((className) => "import '${className.snakeCase}.dart';").join('\n');
 
       items.add(
         generator.generate(
