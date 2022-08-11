@@ -38,6 +38,9 @@ vars:
   generate_copy_with_null:
     type: boolean
     default: true
+  imports:
+    type: string
+    description: imports from the yaml file
   props:
     type: string
     description: define type props of the class

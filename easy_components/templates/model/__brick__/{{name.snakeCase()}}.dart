@@ -1,6 +1,8 @@
 {{#use_equatable}}import 'package:equatable/equatable.dart';{{/use_equatable}}{{#use_copy_with}}
 import 'package:copy_with_extension/copy_with_extension.dart';
 
+{{{imports}}}
+
 part '{{name.snakeCase()}}.g.dart';
 
 @CopyWith({{#generate_copy_with_null}}generateCopyWithNull:true{{/generate_copy_with_null}}){{/use_copy_with}}

@@ -1,7 +1,10 @@
 import 'dart:io';
 
+import 'package:recase/recase.dart';
 import 'package:mason/mason.dart';
 import 'package:yaml/yaml.dart';
+
+import '../constants/brick_arguments.dart';
 
 abstract class Builder {
   final String brickPath;
@@ -25,9 +28,28 @@ abstract class Builder {
 
     List<Future<void>> items = [];
 
+    final classNames = config.keys.map((e) => e.toString().pascalCase).toList();
+
     for (String modelName in config.keys) {
       final subMap = config[modelName] as YamlMap;
+
+      final props = subMap[BrickArguments.props] as YamlMap;
+      Set<String> importedClasses = {};
+
+      for (var entry in props.entries) {
+        final typeDefinition = entry.value as String;
+        importedClasses.addAll(
+          classNames.where((className) {
+            return typeDefinition.contains(className);
+          }),
+        );
+      }
+
       final inputMap = toInputMap(modelName, subMap);
+
+      inputMap[BrickArguments.imports] =
+          importedClasses.map((className) => "import '${className.snakeCase}.dart'").join('\n');
+
       items.add(
         generator.generate(
           target,

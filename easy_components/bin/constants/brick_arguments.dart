@@ -7,4 +7,5 @@ class BrickArguments {
   static const toJson = 'to_json';
   static const name = 'name';
   static const forcedDelete = 'forced_delete';
+  static const imports = 'imports';
 }

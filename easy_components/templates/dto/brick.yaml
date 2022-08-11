@@ -31,7 +31,9 @@ vars:
   to_json:
     type: boolean
     description: Should a to_json constructor be generated
-
+  imports:
+    type: string
+    description: imports from the yaml file
   props:
     type: string
     description: define type props of the class
