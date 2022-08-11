@@ -1,11 +1,6 @@
-user:
+contact_info:
   props:
-    userId: String?
-    value: String?
-  use_copy_with: true #all defaults to true
-  copy_with_null: true
-  equatable: true
-
-account:
-  props:
-    userId: int=0
+    contactThroughParents: bool=false
+    phoneNumbers: List<PhoneNumber>?
+    emailAddresses: List<EmailAddress>?
+    parents: List<Parent>?
