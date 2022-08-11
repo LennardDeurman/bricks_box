@@ -52,5 +52,11 @@ void main(List<String> arguments) async {
       ['format', '.'],
       runInShell: true,
     );
+
+    await Process.run(
+      'flutter',
+      ['packages' 'pub' 'run' 'build_runner' 'build' '--delete-conflicting-outputs'],
+      runInShell: true,
+    );
   });
 }
