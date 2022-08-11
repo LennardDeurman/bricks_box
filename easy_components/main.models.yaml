@@ -1,0 +1,23 @@
+suffix: Entity
+
+contact_info:
+  props:
+    contactThroughParents: bool=false
+    phoneNumbers: List<PhoneNumber>?
+    emailAddresses: List<EmailAddress>?
+    parents: List<Parent>?
+
+email_address:
+  props:
+    id: String
+    address: String
+
+phone_number:
+  props:
+    id: String
+    number: String
+
+parent:
+  props:
+    phoneNumbers: List<PhoneNumber>?
+    emailAddresses: List<EmailAddress>?

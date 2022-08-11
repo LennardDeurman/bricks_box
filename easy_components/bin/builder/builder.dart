@@ -1,3 +1,4 @@
+import 'dart:collection';
 import 'dart:io';
 
 import 'package:recase/recase.dart';
@@ -16,7 +17,7 @@ abstract class Builder {
     required this.brickPath,
   });
 
-  Map<String, dynamic> toInputMap(String modelName, YamlMap yamlMap);
+  Map<String, dynamic> toInputMap(String modelName, HashMap yamlMap);
 
   Future<void> run() async {
     final generator = await MasonGenerator.fromBrick(Brick.git(
@@ -27,37 +28,55 @@ abstract class Builder {
     ));
     final target = DirectoryGeneratorTarget(Directory.current);
 
+    final suffix = config.get(BrickArguments.suffix, '');
+
     List<Future<void>> items = [];
 
     final classNames = config.keys.map((e) => e.toString().pascalCase).toList();
-    final suffix = config.get(BrickArguments.suffix, '');
 
-    for (String modelName in config.keys) {
-      if ([BrickArguments.suffix].contains(modelName)) return;
+    final modelsMap = HashMap.of(config)
+      ..removeWhere((key, _) {
+        return [
+          BrickArguments.forcedDelete,
+          BrickArguments.suffix,
+        ].contains(key.toString());
+      });
 
-      final subMap = config[modelName] as YamlMap;
+    for (String modelName in modelsMap.keys) {
+      final subMap = modelsMap[modelName] as YamlMap;
 
-      final completeModelName = '$modelName$suffix'; //We need to add the suffix here
+      final completeModelName =
+          '$modelName$suffix'.pascalCase; //We need to add the suffix here
 
       final props = subMap[BrickArguments.props] as YamlMap;
       Set<String> importedClasses = {};
 
+      final updatedProps = HashMap<String, String>();
+
       for (var entry in props.entries) {
-        final typeDefinition = entry.value as String;
+        var typeDefinition = entry.value as String;
 
         for (String className in classNames) {
           final exists = typeDefinition.contains(className);
-          final completeClassName = '$className$suffix'.pascalCase; //Here suffix as well
+          final completeClassName =
+              '$className$suffix'.pascalCase; //Here suffix as well
           if (exists) importedClasses.add(completeClassName);
-          typeDefinition.replaceAll(className, completeClassName);
+          typeDefinition =
+              typeDefinition.replaceAll(className, completeClassName);
         }
+
+        updatedProps[entry.key] = typeDefinition;
       }
 
-      final inputMap = toInputMap(completeModelName, subMap);
+      final updatedSubMap = HashMap.of(subMap);
+      updatedSubMap[BrickArguments.props] = updatedProps;
+
+      final inputMap = toInputMap(completeModelName, updatedSubMap);
 
       //No suffix needed since it was already handled
-      inputMap[BrickArguments.imports] =
-          importedClasses.map((className) => "import '${className.snakeCase}.dart';").join('\n');
+      inputMap[BrickArguments.imports] = importedClasses
+          .map((className) => "import '${className.snakeCase}.dart';")
+          .join('\n');
 
       items.add(
         generator.generate(

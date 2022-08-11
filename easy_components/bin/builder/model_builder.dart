@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:pre_hooks/converter/model_input_converter.dart';
 import 'package:yaml/yaml.dart';
 
@@ -12,13 +14,13 @@ class ModelBuilder extends Builder {
       : super(config: config, brickPath: Constants.brickModelLocation);
 
   @override
-  Map<String, dynamic> toInputMap(String modelName, YamlMap yamlMap) {
+  Map<String, dynamic> toInputMap(String modelName, HashMap yamlMap) {
     final useEquatable = yamlMap.get<bool>(BrickArguments.useEquatable, true);
     final generateCopyWithNull =
         yamlMap.get<bool>(BrickArguments.generateCopyWithNull, true);
     final useCopyWith = yamlMap.get<bool>(BrickArguments.useCopyWith, true);
 
-    final props = yamlMap[BrickArguments.props] as YamlMap;
+    final props = yamlMap[BrickArguments.props] as Map<String, String>;
 
     final propsStr = QueryConverter.convert(props);
 

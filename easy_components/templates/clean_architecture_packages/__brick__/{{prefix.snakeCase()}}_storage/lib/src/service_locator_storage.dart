@@ -14,6 +14,7 @@ class ServiceLocatorStorage {
 
     serviceLocator.registerSingleton(sharedPrefs);
     serviceLocator.registerLazySingleton(() => const FlutterSecureStorage());
-    serviceLocator.registerLazySingleton(() => SessionStore(serviceLocator.get()));
+    serviceLocator
+        .registerLazySingleton(() => SessionStore(serviceLocator.get()));
   }
 }

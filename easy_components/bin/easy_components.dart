@@ -55,7 +55,14 @@ void main(List<String> arguments) async {
 
     await Process.run(
       'flutter',
-      ['packages' 'pub' 'run' 'build_runner' 'build' '--delete-conflicting-outputs'],
+      [
+        'packages'
+            'pub'
+            'run'
+            'build_runner'
+            'build'
+            '--delete-conflicting-outputs'
+      ],
       runInShell: true,
     );
   });

@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:yaml/yaml.dart';
 
 import '../constants/brick_arguments.dart';
@@ -12,11 +14,11 @@ class DtoBuilder extends Builder {
       : super(config: config, brickPath: Constants.brickDtoLocation);
 
   @override
-  Map<String, dynamic> toInputMap(String modelName, YamlMap yamlMap) {
+  Map<String, dynamic> toInputMap(String modelName, HashMap yamlMap) {
     final fromJson = yamlMap.get<bool>(BrickArguments.fromJson, true);
     final toJson = yamlMap.get<bool>(BrickArguments.toJson, true);
 
-    final props = yamlMap[BrickArguments.props] as YamlMap;
+    final props = yamlMap[BrickArguments.props] as Map<String, String>;
 
     return DtoInputConverter({
       BrickArguments.name: modelName,

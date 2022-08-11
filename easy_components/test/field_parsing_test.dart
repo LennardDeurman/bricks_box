@@ -41,6 +41,8 @@ void main() {
   test('determine key', () {
     expect(_determineKey('String?/user_id'), 'user_id');
     expect(_determineKey('String?/user_id=0'), 'user_id');
+    expect(_determineKey('String/https://tareas.nl/account_id'),
+        'https://tareas.nl/account_id');
   });
 
   test('determine defaults', () {

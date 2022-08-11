@@ -1,0 +1,6 @@
+user_info:
+  props:
+    sub: String/sub
+    email: String/email
+    accountId: String/https://tareas.nl/account_id
+    isEmailVerified: bool/email_verified
