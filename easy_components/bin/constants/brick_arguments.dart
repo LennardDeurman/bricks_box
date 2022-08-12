@@ -9,4 +9,5 @@ class BrickArguments {
   static const forcedDelete = 'forced_delete';
   static const imports = 'imports';
   static const suffix = 'suffix';
+  static const genExport = 'gen_export';
 }

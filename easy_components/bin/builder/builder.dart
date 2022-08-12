@@ -19,6 +19,10 @@ abstract class Builder {
 
   Map<String, dynamic> toInputMap(String modelName, HashMap yamlMap);
 
+  String getSuffix() {
+    return config.get(BrickArguments.suffix, '');
+  }
+
   Future<void> run() async {
     final generator = await MasonGenerator.fromBrick(Brick.git(
       GitPath(
@@ -28,19 +32,22 @@ abstract class Builder {
     ));
     final target = DirectoryGeneratorTarget(Directory.current);
 
-    final suffix = config.get(BrickArguments.suffix, '');
+    final suffix = getSuffix();
+    final genExport = config.get(BrickArguments.genExport, '');
 
     List<Future<void>> items = [];
-
-    final classNames = config.keys.map((e) => e.toString().pascalCase).toList();
 
     final modelsMap = HashMap.of(config)
       ..removeWhere((key, _) {
         return [
           BrickArguments.forcedDelete,
           BrickArguments.suffix,
+          BrickArguments.genExport,
         ].contains(key.toString());
       });
+
+    final classNames =
+        modelsMap.keys.map((e) => e.toString().pascalCase).toList();
 
     for (String modelName in modelsMap.keys) {
       final subMap = modelsMap[modelName] as YamlMap;
@@ -84,6 +91,14 @@ abstract class Builder {
           vars: inputMap,
         ),
       );
+    }
+
+    if (genExport.isNotEmpty) {
+      items.add(File('${genExport.snakeCase}.dart').writeAsString(
+        classNames
+            .map((className) => "export '${className.snakeCase}.dart';")
+            .join('\n'),
+      ));
     }
 
     await Future.wait(items);

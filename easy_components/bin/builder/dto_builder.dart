@@ -10,8 +10,15 @@ import 'builder.dart';
 import 'package:pre_hooks/pre_hooks.dart';
 
 class DtoBuilder extends Builder {
+  static const _dtoSuffix = 'Dto';
+
   DtoBuilder(Map<dynamic, dynamic> config)
       : super(config: config, brickPath: Constants.brickDtoLocation);
+
+  @override
+  String getSuffix() {
+    return _dtoSuffix;
+  }
 
   @override
   Map<String, dynamic> toInputMap(String modelName, HashMap yamlMap) {

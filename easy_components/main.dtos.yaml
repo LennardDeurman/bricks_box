@@ -1,3 +1,5 @@
+gen_export: dtos
+
 user_info:
   props:
     sub: String/sub
