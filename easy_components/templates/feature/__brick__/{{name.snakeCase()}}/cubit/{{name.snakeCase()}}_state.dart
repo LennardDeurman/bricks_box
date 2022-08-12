@@ -10,7 +10,7 @@ class {{name.pascalCase()}}State {
     return {{name.pascalCase()}}State(data: {{name.pascalCase()}}Data());
   }
 
-  {{name.pascalCase()}}State copyWith({ {{name}}? data }) {
-    return {{name.pascalCase()}}State(data: this.data ?? data);
+  {{name.pascalCase()}}State copyWith({ {{name.pascalCase()}}Data ? data }) {
+    return {{name.pascalCase()}}State(data: data ?? this.data);
   }
 }

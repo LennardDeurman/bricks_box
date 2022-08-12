@@ -46,8 +46,10 @@ abstract class Builder {
         ].contains(key.toString());
       });
 
-    final classNames =
-        modelsMap.keys.map((e) => e.toString().pascalCase).toList();
+    final classNames = modelsMap.keys
+        .map((e) => e.toString().pascalCase)
+        .toList()
+      ..sort((a, b) => b.length.compareTo(a.length));
 
     for (String modelName in modelsMap.keys) {
       final subMap = modelsMap[modelName] as YamlMap;

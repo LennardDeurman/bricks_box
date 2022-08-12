@@ -1,10 +1,80 @@
-user:
+gen_export: dtos.dart
+
+user_info:
   props:
-    userId: String?/user_id
-    value: String?/value
-  from_json: true #defaults to true
-  to_json: true #defaults to true
+    sub: String/sub
+    email: String/email
+    accountId: String/https://tareas.nl/account_id
+    isEmailVerified: bool/email_verified
+
+team:
+  props:
+    id: String/id
+    name: String/name
+
+address:
+  props:
+    postalCode: String?/postalCode
+    houseNumber: String?/houseNumber
+    houseNumberAddition: String?/houseNumberAddition
+    streetName: String?/streetName
+    place: String?/place
+    country: String?/country
+
+email_address:
+  props:
+    id: String/id
+    address: String/address
+
+phone_number:
+  props:
+    id: String/id
+    number: String/number
+
+parent:
+  props:
+    phoneNumbers: List<PhoneNumber>?/phoneNumbers
+    emailAddresses: List<EmailAddress>?/emailAddresses
+
+contact_info:
+  props:
+    contactThroughParents: bool=false/contactThroughParents
+    phoneNumbers: List<PhoneNumber>?/phoneNumbers
+    emailAddresses: List<EmailAddress>?/emailAddresses
+    parents: List<Parent>?/parents
+
+member:
+  props:
+    firstName: String/firstName
+    lastName: String/lastName
+    birthDay: DateTime?/birthDay
+    age: int?/age
+    socialPoint: int=0/socialPoint
+    addresses: List<Address>?/addresses
+    contactInfo: ContactInfo?/contactInfo
+    organisation: Organisation?/organisation
+    certifications: List<CertificationHolder>?/certificstions
+    teams: List<Team>?/teams
+
+organisation:
+  props:
+    name: String/name
+    id: String/id
+
+certificate:
+  props:
+    name: String/name
+    id: String/id
 
 account:
   props:
-    userId: int/user_id=0
+    email: String?/email
+    externalUserId: String/externalUserId
+    isSuperAdmin: bool/isSuperAdmin
+    members: List<Member>?/members
+
+certification_holder:
+  props:
+    expirationDate: DateTime?
+    certificate: Certificate?
+    holderId: String

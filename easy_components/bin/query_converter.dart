@@ -5,7 +5,7 @@ import 'yaml_parser/yaml_parser.dart';
 class QueryConverter {
   static String convert(Map<String, String> yamlMap) {
     final entries = yamlMap.entries;
-    return entries.map((mapEntry) {
+    final response = entries.map((mapEntry) {
       final res = YamlParser.parse(mapEntry.key, mapEntry.value);
       var str = '${res.className}:${res.name}';
       if (res.key != null) {
@@ -16,5 +16,6 @@ class QueryConverter {
       }
       return str;
     }).join(',');
+    return response;
   }
 }
