@@ -159,7 +159,9 @@ void main() {
         final conversionClass = outputClass.pascalCase;
         final conversionKey =
             '${entry.key.snakeCase}:${conversionClass.snakeCase}';
-        final body = jsonResponse[conversionKey];
+        final body = jsonResponse[conversionKey]['output'];
+        final unknownTypes = jsonResponse[conversionKey]['unknown_types'];
+        print(unknownTypes);
         final code =
             "$conversionClass to$conversionClass() {\nreturn $conversionClass($body);\n}";
         codeBlocks.add(code);

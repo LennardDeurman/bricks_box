@@ -8,7 +8,7 @@ import 'test.models.dart';
 
 void main() {
   test('Test with output', () {
-    final map = <String, String>{};
+    final map = <String, dynamic>{};
 
     map['MirrorTestEntity:MirrorTest'] = _mk(MirrorTestEntity, MirrorTest);
 
@@ -16,11 +16,12 @@ void main() {
   });
 }
 
-String _mk(Type from, Type to) {
+Map<String, dynamic> _mk(Type from, Type to) {
   final inputClassParameters = _getConstructorParameters(from);
   final outputClassParameters = _getConstructorParameters(to);
 
   final fieldAssignations = <String>[];
+  final List<String> unknownTypes = [];
 
   for (ParameterMirror mirror in outputClassParameters) {
     final name = MirrorSystem.getName(mirror.simpleName);
@@ -35,10 +36,23 @@ String _mk(Type from, Type to) {
         output = name;
       } else if (inputMirror.type.isSubtypeOf(reflectType(List))) {
         final childType = mirror.type.typeArguments.first.reflectedType;
-        output =
-            '$name.map((item) => item.to${childType.toString().pascalCase}()).toList()';
+        final typeName = childType.toString().pascalCase;
+        if (inputMirror.isOptional) {
+          output = '$name?.map((item) => item.to$typeName()).toList()';
+        } else {
+          output = '$name.map((item) => item.to$typeName()).toList()';
+        }
+
+        unknownTypes.add(typeName);
       } else {
-        output = '$name.to${mirror.type.reflectedType.toString().pascalCase}()';
+        final typeName = mirror.type.reflectedType.toString().pascalCase;
+        if (inputMirror.isOptional) {
+          output = '$name?.to$typeName()';
+        } else {
+          output = '$name.to$typeName()';
+        }
+
+        unknownTypes.add(typeName);
       }
     }
 
@@ -46,7 +60,10 @@ String _mk(Type from, Type to) {
     fieldAssignations.add(input);
   }
 
-  return '${fieldAssignations.join(',\n')},';
+  return {
+    'output': '${fieldAssignations.join(',\n')},',
+    'unknown_types': unknownTypes.map((e) => e.snakeCase),
+  };
 }
 
 List<ParameterMirror> _getConstructorParameters(Type type) {
