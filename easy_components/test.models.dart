@@ -8,6 +8,25 @@ class MirrorTestChildEntity {
   const MirrorTestChildEntity({required this.id});
 }
 
+class MirrorTestChildDto {
+  final String id;
+  const MirrorTestChildDto({required this.id});
+}
+
+class MirrorTestDto {
+  final String id;
+  final String name;
+  final List<String>? items;
+  final MirrorTestChildDto child;
+
+  const MirrorTestDto({
+    required this.id,
+    required this.name,
+    required this.child,
+    this.items,
+  });
+}
+
 class MirrorTest {
   final String id;
   final String name;

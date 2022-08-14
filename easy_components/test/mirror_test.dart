@@ -24,7 +24,8 @@ String _mk(Type from, Type to) {
 
   for (ParameterMirror mirror in outputClassParameters) {
     final name = MirrorSystem.getName(mirror.simpleName);
-    final elements = inputClassParameters.where((element) => element.simpleName == mirror.simpleName);
+    final elements = inputClassParameters
+        .where((element) => element.simpleName == mirror.simpleName);
 
     var output = 'null';
 
@@ -34,7 +35,8 @@ String _mk(Type from, Type to) {
         output = name;
       } else if (inputMirror.type.isSubtypeOf(reflectType(List))) {
         final childType = mirror.type.typeArguments.first.reflectedType;
-        output = '$name.map((item) => item.to${childType.toString().pascalCase}()).toList()';
+        output =
+            '$name.map((item) => item.to${childType.toString().pascalCase}()).toList()';
       } else {
         output = '$name.to${mirror.type.reflectedType.toString().pascalCase}()';
       }
@@ -51,13 +53,13 @@ List<ParameterMirror> _getConstructorParameters(Type type) {
   final info = reflectClass(type);
   List<DeclarationMirror> constructors = List.from(
     info.declarations.values.where(
-          (declare) {
+      (declare) {
         return declare is MethodMirror && declare.isConstructor;
       },
     ),
   );
 
-  final constructor = constructors.firstWhere((element) => element is MethodMirror) as MethodMirror;
+  final constructor = constructors
+      .firstWhere((element) => element is MethodMirror) as MethodMirror;
   return constructor.parameters;
 }
-

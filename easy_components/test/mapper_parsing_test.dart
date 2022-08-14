@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'dart:mirrors';
 
@@ -10,6 +11,9 @@ import '../bin/constants/brick_arguments.dart';
 
 void main() {
   const _importsKey = 'imports';
+  const _codeLinesKey = 'code_lines';
+  const _mapperGeneratorFileName = 'mapper_generator.dart';
+  const _outputFileName = 'output.json';
 
   /// Loads the yaml from a specified file path
   Future<Map> loadYamlToMap(String filePath) async {
@@ -19,7 +23,8 @@ void main() {
   }
 
   /// Loads the map structure into a structure of original_class => [output_class] ARRAY
-  List<MapEntry<String, List<String>>> yamlMapToConversionEntries(Map response) {
+  List<MapEntry<String, List<String>>> yamlMapToConversionEntries(
+      Map response) {
     List<MapEntry<String, List<String>>> entries = [];
     for (var mapEntry in response.entries) {
       final result = response[mapEntry.key];
@@ -31,7 +36,8 @@ void main() {
   }
 
   /// Strips the multidimensional entries to single entries e.g. original_class => output_class [VALUE-VALUE]
-  List<MapEntry<String, String>> stripEntriesToSingleConversionPairs(List<MapEntry<String, List<String>>> entries) {
+  List<MapEntry<String, String>> stripEntriesToSingleConversionPairs(
+      List<MapEntry<String, List<String>>> entries) {
     final conversions = <MapEntry<String, String>>[];
     for (final entry in entries) {
       final outputClasses = entry.value;
@@ -44,7 +50,7 @@ void main() {
 
   /// Generates a single code line
   String generateCodeLine(String classA, String classB) {
-    return "map['${classA.snakeCase}:${classB.snakeCase}'] = _mk(${classA.pascalCase}, ${classB.pascalCase})";
+    return "map['${classA.snakeCase}:${classB.snakeCase}'] = _mk(${classA.pascalCase}, ${classB.pascalCase});";
   }
 
   /// Generates all code line s
@@ -78,7 +84,14 @@ void main() {
       final conversionClasses = to.split(',');
       classes.addAll(conversionClasses);
     }
-    expect(classes, containsAll(['contact_info_entity', 'contact_info_dto', 'address_entity', 'address_dto']));
+    expect(
+        classes,
+        containsAll([
+          'contact_info_entity',
+          'contact_info_dto',
+          'address_entity',
+          'address_dto'
+        ]));
   });
 
   test('Test line', () async {
@@ -106,7 +119,7 @@ void main() {
 
     expect(
       codeLines,
-      "map['mirror_test:mirror_test_entity'] = _mk(MirrorTest, MirrorTestEntity)\nmap['mirror_test_entity:mirror_test'] = _mk(MirrorTestEntity, MirrorTest)\n",
+      "map['mirror_test:mirror_test_entity'] = _mk(MirrorTest, MirrorTestEntity);\nmap['mirror_test_entity:mirror_test'] = _mk(MirrorTestEntity, MirrorTest);\n",
     );
 
     expect(importLines, "import 'test.models.dart';\n");
@@ -121,8 +134,54 @@ void main() {
     final target = DirectoryGeneratorTarget(Directory.current);
 
     await generator.generate(target, vars: {
-      'code_lines': codeLines,
-      'imports': importLines,
+      _codeLinesKey: codeLines,
+      _importsKey: importLines,
     });
+
+    await Process.run(
+      'dart',
+      ['format', '.'],
+      runInShell: true,
+    );
+
+    await Process.run('dart', [_mapperGeneratorFileName]);
+
+    final jsonFile = File(_outputFileName);
+    final jsonResponse =
+        jsonDecode(await jsonFile.readAsString()) as Map<String, dynamic>;
+
+    List<Future> futures = [];
+
+    for (MapEntry<String, List<String>> entry in entries) {
+      final outputClasses = entry.value;
+      List<String> codeBlocks = [];
+      for (String outputClass in outputClasses) {
+        final conversionClass = outputClass.pascalCase;
+        final conversionKey =
+            '${entry.key.snakeCase}:${conversionClass.snakeCase}';
+        final body = jsonResponse[conversionKey];
+        final code =
+            "$conversionClass to$conversionClass() {\nreturn $conversionClass($body);\n}";
+        codeBlocks.add(code);
+      }
+      final mapperName = '${entry.key.pascalCase}Mapper';
+      final mapperContents =
+          '$importLines\n\nextension $mapperName on ${entry.key.pascalCase} {\n\n${codeBlocks.join("\n\n")}\n\n}';
+      final mapperFileName = '${mapperName.snakeCase}.dart';
+      futures.add(File(mapperFileName).writeAsString(mapperContents));
+    }
+
+    await Future.wait(futures);
+
+    await Process.run(
+      'dart',
+      ['format', '.'],
+      runInShell: true,
+    );
+
+    await Future.wait([
+      File(_mapperGeneratorFileName).delete(),
+      jsonFile.delete(),
+    ]);
   });
 }

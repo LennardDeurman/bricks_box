@@ -32,9 +32,19 @@ String _mk(Type from, Type to) {
         output = name;
       } else if (inputMirror.type.isSubtypeOf(reflectType(List))) {
         final childType = mirror.type.typeArguments.first.reflectedType;
-        output = '$name.map((item) => item.to${childType.toString().pascalCase}()).toList()';
+        if (inputMirror.isOptional) {
+          output = '$name?.map((item) => item.to${childType.toString().pascalCase}()).toList()';
+        } else {
+          output = '$name.map((item) => item.to${childType.toString().pascalCase}()).toList()';
+        }
+
       } else {
-        output = '$name.to${mirror.type.reflectedType.toString().pascalCase}()';
+        if (inputMirror.isOptional) {
+          output = '$name?.to${mirror.type.reflectedType.toString().pascalCase}()';
+        } else {
+          output = '$name.to${mirror.type.reflectedType.toString().pascalCase}()';
+        }
+
       }
     }
 
