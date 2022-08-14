@@ -7,7 +7,7 @@ import 'package:test/test.dart';
 {{{imports}}}
 
 void main() {
-  final map = <String, String>{};
+  final map = <String, dynamic>{};
 
   {{{code_lines}}}
 
