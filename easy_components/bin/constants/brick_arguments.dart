@@ -10,4 +10,5 @@ class BrickArguments {
   static const imports = 'imports';
   static const suffix = 'suffix';
   static const genExport = 'gen_export';
+  static const to = 'to';
 }

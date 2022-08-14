@@ -1,0 +1,18 @@
+name: extension
+description: Creates an extension
+
+version: 0.1.0+1
+
+environment:
+  mason: ">=0.1.0-dev.26 <0.1.0"
+
+
+vars:
+  model_name:
+    type: string
+    description: Name of the model the extension will be created on
+    prompt: Model name?
+  body:
+    type: string
+  imports:
+    type: string

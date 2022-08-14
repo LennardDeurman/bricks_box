@@ -1,4 +1,4 @@
-part of '{{name.snakeCase()}}_cubit.dart';
+part of 'mapper_generator.dart';
 
 class {{name.pascalCase()}}State {
   final {{name.pascalCase()}}Data data;

@@ -1,0 +1,7 @@
+imports: ['test.models.dart']
+
+mirror_test:
+  to: mirror_test_entity
+
+mirror_test_entity:
+  to: mirror_test

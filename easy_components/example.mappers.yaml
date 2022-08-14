@@ -1,0 +1,5 @@
+contact_info:
+  to: contact_info_entity,contact_info_dto
+
+address:
+  to: address_entity,address_dto
