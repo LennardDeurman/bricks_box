@@ -117,13 +117,6 @@ void main() {
     final codeLines = generateCodeLines(conversions);
     final importLines = generateImportLines(imports);
 
-    expect(
-      codeLines,
-      "map['mirror_test:mirror_test_entity'] = _mk(MirrorTest, MirrorTestEntity);\nmap['mirror_test_entity:mirror_test'] = _mk(MirrorTestEntity, MirrorTest);\n",
-    );
-
-    expect(importLines, "import 'test.models.dart';\n");
-
     final generator = await MasonGenerator.fromBrick(Brick.git(
       GitPath(
         'https://github.com/LennardDeurman/bricks_box',
@@ -152,23 +145,36 @@ void main() {
 
     List<Future> futures = [];
 
+    final map = Map.fromEntries(entries);
+    final classes = map.keys.toList() + map.values.expand((x) => x).toList();
+
     for (MapEntry<String, List<String>> entry in entries) {
       final outputClasses = entry.value;
       List<String> codeBlocks = [];
+
+      String customClassImport = '';
+
       for (String outputClass in outputClasses) {
         final conversionClass = outputClass.pascalCase;
         final conversionKey =
             '${entry.key.snakeCase}:${conversionClass.snakeCase}';
         final body = jsonResponse[conversionKey]['output'];
-        final unknownTypes = jsonResponse[conversionKey]['unknown_types'];
-        print(unknownTypes);
+        final unknownTypes =
+            jsonResponse[conversionKey]['unknown_types'] as List<String>;
         final code =
             "$conversionClass to$conversionClass() {\nreturn $conversionClass($body);\n}";
+
+        final importClasses =
+            unknownTypes.where((element) => classes.contains(element));
+        customClassImport = importClasses
+            .map((importClass) => "import '${importClass.snakeCase}.dart';")
+            .join("\n");
+
         codeBlocks.add(code);
       }
       final mapperName = '${entry.key.pascalCase}Mapper';
       final mapperContents =
-          '$importLines\n\nextension $mapperName on ${entry.key.pascalCase} {\n\n${codeBlocks.join("\n\n")}\n\n}';
+          '$importLines\n\n$customClassImport\n\nextension $mapperName on ${entry.key.pascalCase} {\n\n${codeBlocks.join("\n\n")}\n\n}';
       final mapperFileName = '${mapperName.snakeCase}.dart';
       futures.add(File(mapperFileName).writeAsString(mapperContents));
     }

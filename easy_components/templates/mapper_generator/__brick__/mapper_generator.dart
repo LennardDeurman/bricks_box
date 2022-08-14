@@ -61,7 +61,7 @@ Map<String, dynamic> _mk(Type from, Type to) {
 
   return {
     'output': '${fieldAssignations.join(',\n')},',
-    'unknown_types': unknownTypes.map((e) => e.snakeCase),
+    'unknown_types': unknownTypes.map((e) => e.snakeCase).toList(),
   };
 }
 

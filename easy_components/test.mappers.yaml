@@ -3,5 +3,11 @@ imports: ['test.models.dart']
 mirror_test:
   to: mirror_test_entity
 
+mirror_test_child:
+  to: mirror_test_child_entity
+
 mirror_test_entity:
   to: mirror_test
+
+mirror_test_child_entity:
+  to: mirror_test_child
