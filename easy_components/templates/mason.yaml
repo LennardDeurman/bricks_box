@@ -15,3 +15,5 @@ bricks:
     path: ui_package
   clean_architecture_packages:
     path: clean_architecture_packages
+  mapper_generator:
+    path: mapper_generator
