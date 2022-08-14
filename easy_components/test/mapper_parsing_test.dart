@@ -160,14 +160,15 @@ void main() {
             '${entry.key.snakeCase}:${conversionClass.snakeCase}';
         final body = jsonResponse[conversionKey]['output'];
         final unknownTypes =
-            jsonResponse[conversionKey]['unknown_types'] as List<String>;
+            jsonResponse[conversionKey]['unknown_types'] as List;
         final code =
             "$conversionClass to$conversionClass() {\nreturn $conversionClass($body);\n}";
 
         final importClasses =
             unknownTypes.where((element) => classes.contains(element));
         customClassImport = importClasses
-            .map((importClass) => "import '${importClass.snakeCase}.dart';")
+            .map((importClass) =>
+                "import '${importClass.toString().snakeCase}_mapper.dart';")
             .join("\n");
 
         codeBlocks.add(code);

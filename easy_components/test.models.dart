@@ -44,7 +44,7 @@ class MirrorTest {
 class MirrorTestEntity {
   final String id;
   final String name;
-  final List<int>? items;
+  final List<String>? items;
   final MirrorTestChildEntity child;
 
   const MirrorTestEntity({
