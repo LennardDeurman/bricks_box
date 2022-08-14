@@ -1,0 +1,14 @@
+name: cubit
+description: Creates a cubit with default structure
+
+version: 0.1.0+1
+
+environment:
+  mason: ">=0.1.0-dev.26 <0.1.0"
+
+
+vars:
+  name:
+    type: string
+    description: Cubit name
+    prompt: What will be the cubit name?
