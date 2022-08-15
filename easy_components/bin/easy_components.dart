@@ -1,10 +1,11 @@
 import 'dart:io';
-import 'builder/builder.dart';
+
 import 'builder/dto_builder.dart';
 import 'builder/model_builder.dart';
 import 'map_extension.dart';
 import 'constants/brick_arguments.dart';
 import 'constants/global.dart';
+import 'mapper_generator.dart';
 import 'yaml_loader.dart';
 
 void main(List<String> arguments) async {
@@ -17,9 +18,14 @@ void main(List<String> arguments) async {
 
   List<FileSystemEntity> toBeDeletedEntities = [];
 
+  bool didCreateObjects = false;
+
   for (FileSystemEntity item in items) {
     if (item.path.endsWith(Constants.modelsEnding)) {
       print('Found .models file ${item.path}');
+
+      didCreateObjects =
+          true; //Set to true so we know we should run the build_runner
 
       final config = await loadYamlToMap(item.path);
       final modelBuilder = ModelBuilder(config);
@@ -32,6 +38,9 @@ void main(List<String> arguments) async {
     } else if (item.path.endsWith(Constants.dtoEnding)) {
       print('Found .dto file ${item.path}');
 
+      didCreateObjects =
+          true; //Set to true so we know we should run the build_runner
+
       final config = await loadYamlToMap(item.path);
       final dtoBuilder = DtoBuilder(config);
       final forcedDelete = config.get<bool>(BrickArguments.forcedDelete, false);
@@ -40,6 +49,11 @@ void main(List<String> arguments) async {
       }
 
       futures.add(dtoBuilder.run());
+    } else if (item.path.endsWith(Constants.mappersEnding)) {
+      print('Found .mapper file ${item.path}');
+
+      final config = await loadYamlToMap(item.path);
+      await MapperGenerator(config).run();
     }
   }
 
@@ -53,17 +67,19 @@ void main(List<String> arguments) async {
       runInShell: true,
     );
 
-    await Process.run(
-      'flutter',
-      [
-        'packages'
-            'pub'
-            'run'
-            'build_runner'
-            'build'
-            '--delete-conflicting-outputs'
-      ],
-      runInShell: true,
-    );
+    if (didCreateObjects) {
+      await Process.run(
+        'flutter',
+        [
+          'packages'
+              'pub'
+              'run'
+              'build_runner'
+              'build'
+              '--delete-conflicting-outputs'
+        ],
+        runInShell: true,
+      );
+    }
   });
 }

@@ -6,13 +6,20 @@ import 'package:test/test.dart';
 
 import 'test.models.dart';
 
+/// This is a basic test for the template in mason which cannot be tested itself
+/// Make sure it conforms with the template in templates/mapper_generator/mapper_generator.dart
+
 void main() {
-  test('Test with output', () {
+  test('Test the creation of the json output file', () async {
     final map = <String, dynamic>{};
 
     map['MirrorTestEntity:MirrorTest'] = _mk(MirrorTestEntity, MirrorTest);
+    map['MirrorTestChildEntity:MirrorTestChild'] =
+        _mk(MirrorTestChildEntity, MirrorTestChild);
 
-    File('output.json').writeAsString(jsonEncode(map));
+    await File('output.json').writeAsString(jsonEncode(map));
+
+    expect(await File('output.json').exists(), true);
   });
 }
 

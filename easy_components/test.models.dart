@@ -32,12 +32,14 @@ class MirrorTest {
   final String name;
   final List<String>? items;
   final MirrorTestChild child;
+  final List<MirrorTestChild>? children;
 
   const MirrorTest({
     required this.id,
     required this.name,
     required this.child,
     this.items,
+    this.children,
   });
 }
 
@@ -46,11 +48,13 @@ class MirrorTestEntity {
   final String name;
   final List<String>? items;
   final MirrorTestChildEntity child;
+  final List<MirrorTestChildEntity>? children;
 
   const MirrorTestEntity({
     required this.id,
     required this.name,
     this.items,
     required this.child,
+    this.children,
   });
 }

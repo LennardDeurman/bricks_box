@@ -1,3 +1,5 @@
+/// Corresponding test files for mapper_generation_test.dart
+
 class MirrorTestChild {
   final String id;
   const MirrorTestChild({required this.id});

@@ -1,17 +1,18 @@
+import '';
 import 'parsed_field.dart';
 
 class YamlParser {
   static ParsedField parse(String name, String value) {
     return ParsedField(
       name: name,
-      className: _determineClassName(value),
+      className: determineClassName(value),
       isOptional: value.contains('?'),
-      defaultValue: _determineDefault(value),
-      key: _determineKey(value),
+      defaultValue: determineDefault(value),
+      key: determineKey(value),
     );
   }
 
-  static String _determineClassName(String value) {
+  static String determineClassName(String value) {
     String className;
     if (value.contains('=')) {
       className = value.substring(0, value.indexOf('='));
@@ -23,7 +24,7 @@ class YamlParser {
     return className;
   }
 
-  static String? _determineKey(String value) {
+  static String? determineKey(String value) {
     if (value.contains('/')) {
       return value.substring(value.indexOf('/') + 1, value.length);
     }
@@ -31,7 +32,7 @@ class YamlParser {
     return null;
   }
 
-  static String? _determineDefault(String value) {
+  static String? determineDefault(String value) {
     if (value.contains('=')) {
       final keySeparator = value.indexOf('/');
 
