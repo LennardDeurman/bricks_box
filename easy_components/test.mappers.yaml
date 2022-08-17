@@ -13,4 +13,4 @@ mirror_test_entity:
 mirror_test_child_entity:
   to: mirror_test_child
 
-#TODO: fix nullability, tests for parsers, tests in the project
+#TODO: fix nullability, tests for parsers

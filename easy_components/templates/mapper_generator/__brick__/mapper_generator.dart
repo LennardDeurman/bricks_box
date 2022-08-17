@@ -6,7 +6,17 @@ import 'package:test/test.dart';
 
 {{{imports}}}
 
-void main() {
+void main() async {
+  final classes = [{{{classes}}}];
+
+  final items = classes.map((className) async {
+    final contents = await readContents(reflectType(className));
+    return MapEntry(className.toString(), contents);
+  }).toList();
+
+  final classEntries = await Future.wait(items);
+  final classContents = Map.fromEntries(classEntries);
+
   final map = <String, dynamic>{};
 
   {{{code_lines}}}
@@ -14,19 +24,40 @@ void main() {
   File('output.json').writeAsString(jsonEncode(map));
 }
 
-Map<String, dynamic> _mk(Type from, Type to) {
-  final inputClassParameters = _getConstructorParameters(from);
-  final outputClassParameters = _getConstructorParameters(to);
+Future<String?> readContents(TypeMirror mirror) async {
+  final sourceUri = mirror.location?.sourceUri;
+  if (sourceUri != null) {
+    final file = File.fromUri(sourceUri);
+    return file.readAsString();
+  }
+  return null;
+}
+
+Map<String, dynamic> _mk(Type from, Type to, Map<String, String?> classContents) {
+  final fromTypeMirror = reflectClass(from);
+
+  final inputClassParameters = _getConstructorParameters(fromTypeMirror);
+  final outputClassParameters = _getConstructorParameters(reflectClass(to));
 
   final fieldAssignations = <String>[];
   final List<String> unknownTypes = [];
 
+  final classContent = classContents.containsKey(from.toString()) ? classContents[from.toString()] : null;
+
   for (ParameterMirror mirror in outputClassParameters) {
     final name = MirrorSystem.getName(mirror.simpleName);
-    final elements = inputClassParameters
-        .where((element) => element.simpleName == mirror.simpleName);
+    final elements = inputClassParameters.where((element) => element.simpleName == mirror.simpleName);
 
     var output = 'null';
+
+    bool isOptional = false;
+
+    if (classContent != null) {
+      final regEx = '(?<=final\\s).*(?=\\s$name;)';
+      final match = RegExp(regEx).firstMatch(classContent);
+      final typeAsString = match?.group(0);
+      isOptional = typeAsString?.contains('?') == true;
+    }
 
     if (elements.isNotEmpty) {
       final inputMirror = elements.first;
@@ -35,25 +66,25 @@ Map<String, dynamic> _mk(Type from, Type to) {
       } else if (inputMirror.type.isSubtypeOf(reflectType(List))) {
         final childType = mirror.type.typeArguments.first.reflectedType;
         final typeName = childType.toString().pascalCase;
-        if (inputMirror.isOptional) {
+        if (isOptional) {
           output = '$name?.map((item) => item.to$typeName()).toList()';
         } else {
           output = '$name.map((item) => item.to$typeName()).toList()';
         }
 
-        unknownTypes.add(inputMirror.type.typeArguments.first.reflectedType.toString().pascalCase);
+        unknownTypes.add(typeName);
       } else {
         final typeName = mirror.type.reflectedType.toString().pascalCase;
-        if (inputMirror.isOptional) {
+
+        if (isOptional) {
           output = '$name?.to$typeName()';
         } else {
           output = '$name.to$typeName()';
         }
 
-        unknownTypes.add(inputMirror.type.reflectedType.toString().pascalCase);
+        unknownTypes.add(typeName);
       }
     }
-
 
     final input = '$name: $output';
     fieldAssignations.add(input);
@@ -65,10 +96,11 @@ Map<String, dynamic> _mk(Type from, Type to) {
   };
 }
 
-List<ParameterMirror> _getConstructorParameters(Type type) {
-  final info = reflectClass(type);
+List<ParameterMirror> _getConstructorParameters(ClassMirror info) {
+  final declarations = info.declarations;
+
   List<DeclarationMirror> constructors = List.from(
-    info.declarations.values.where(
+    declarations.values.where(
           (declare) {
         return declare is MethodMirror && declare.isConstructor;
       },
@@ -78,4 +110,5 @@ List<ParameterMirror> _getConstructorParameters(Type type) {
   final constructor = constructors.firstWhere((element) => element is MethodMirror) as MethodMirror;
   return constructor.parameters;
 }
+
 

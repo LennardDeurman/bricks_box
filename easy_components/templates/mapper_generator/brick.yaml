@@ -12,3 +12,5 @@ vars:
     type: string
   code_lines:
     type: string
+  classes:
+    type: string

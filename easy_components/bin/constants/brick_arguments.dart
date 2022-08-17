@@ -13,4 +13,5 @@ class BrickArguments {
   static const to = 'to';
   static const autoGenerateImports = 'auto_generate_imports';
   static const codeLines = 'code_lines';
+  static const classes = 'classes';
 }

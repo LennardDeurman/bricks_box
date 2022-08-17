@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:recase/recase.dart';
 import 'package:test/test.dart';
 
 import '../bin/mapper_generator.dart';
@@ -86,18 +87,21 @@ void main() {
     final codeLines = mapperGenerator.generateCodeLines(mockSingleEntries);
     expect(
       codeLines,
-      "map['mirror_test:mirror_test_entity'] = _mk(MirrorTest, MirrorTestEntity);\n"
-      "map['mirror_test_child:mirror_test_child_entity'] = _mk(MirrorTestChild, MirrorTestChildEntity);\n"
-      "map['mirror_test_entity:mirror_test'] = _mk(MirrorTestEntity, MirrorTest);\n"
-      "map['mirror_test_child_entity:mirror_test_child'] = _mk(MirrorTestChildEntity, MirrorTestChild);\n"
+      "map['mirror_test:mirror_test_entity'] = _mk(MirrorTest, MirrorTestEntity, classContents,);\n"
+      "map['mirror_test_child:mirror_test_child_entity'] = _mk(MirrorTestChild, MirrorTestChildEntity, classContents,);\n"
+      "map['mirror_test_entity:mirror_test'] = _mk(MirrorTestEntity, MirrorTest, classContents,);\n"
+      "map['mirror_test_child_entity:mirror_test_child'] = _mk(MirrorTestChildEntity, MirrorTestChild, classContents,);\n",
     );
   });
 
   test('Generate export contents', () {
     final mapperGenerator = MapperGenerator(mockConfigMap);
     final imports = mapperGenerator.generateExportContents({'mirror_test', 'mirror_test_entity'});
-    expect(imports, "export 'mirror_test_mapper.dart';\n"
-        "export 'mirror_test_entity_mapper.dart';",);
+    expect(
+      imports,
+      "export 'mirror_test_mapper.dart';\n"
+      "export 'mirror_test_entity_mapper.dart';",
+    );
   });
 
   test('Create mapper code block', () {
@@ -108,7 +112,8 @@ void main() {
 
   test('Create custom import classes', () {
     final mapperGenerator = MapperGenerator(mockConfigMap);
-    final customImport = mapperGenerator.createCustomClassImports(['mirror_test_child', 'mirror_test'], {'mirror_test'});
+    final customImport =
+        mapperGenerator.createCustomClassImports(['mirror_test_child', 'mirror_test'], {'mirror_test'});
     expect(customImport, "import 'mirror_test_mapper.dart';");
   });
 
@@ -131,5 +136,46 @@ void main() {
         ),
       );
     }
+  });
+
+  test('Make mapper template', () {
+    //TODO:
+    final testFileBuffer = StringBuffer();
+    testFileBuffer.writeln("import 'dart:convert';");
+    testFileBuffer.writeln("import 'package:test/test.dart';");
+    testFileBuffer.writeln('');
+    testFileBuffer.writeln("import 'seeds.dart';");
+    testFileBuffer.writeln('');
+
+    final groupBlocksBuffer = StringBuffer();
+
+    for (final entry in mockEntries) {
+      final fromClassName = entry.key.pascalCase;
+      final mapperName = '${fromClassName}Mapper';
+
+      final testBodies = <String>[];
+
+      for (var element in entry.value) {
+        final variableName = '${element.camelCase}MockObject';
+
+        final toClassName = element.pascalCase;
+        final buffer = StringBuffer();
+        buffer.writeln("test('from:$fromClassName to:$toClassName', () {");
+        buffer.writeln('expect(jsonEncode($variableName), jsonEncode($variableName.to$toClassName()));');
+        buffer.writeln('});');
+
+        testBodies.add(buffer.toString());
+      }
+
+      final groupBody = "group('Conversions for $mapperName', () {\n${testBodies.join('\n\n')}});";
+      groupBlocksBuffer.write(groupBody);
+      groupBlocksBuffer.writeln('');
+      groupBlocksBuffer.writeln('');
+    }
+
+    testFileBuffer.write("void main() {\n\n${groupBlocksBuffer.toString()}}");
+
+    final output = testFileBuffer.toString();
+    print(output);
   });
 }

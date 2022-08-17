@@ -110,7 +110,7 @@ class MapperGenerator {
 
   /// Generates a single code line
   String generateCodeLine(String classA, String classB) {
-    return "map['${classA.snakeCase}:${classB.snakeCase}'] = _mk(${classA.pascalCase}, ${classB.pascalCase});";
+    return "map['${classA.snakeCase}:${classB.snakeCase}'] = _mk(${classA.pascalCase}, ${classB.pascalCase}, classContents,);";
   }
 
   /// Generates all code line s
@@ -133,6 +133,9 @@ class MapperGenerator {
     await generator.generate(target, vars: {
       BrickArguments.codeLines: generateCodeLines(_singleConversionEntries),
       BrickArguments.imports: _importLines,
+      BrickArguments.classes: Map.fromEntries(_singleConversionEntries).keys.map(
+            (e) => e.pascalCase,
+          ).toList(),
     });
 
     await Process.run(

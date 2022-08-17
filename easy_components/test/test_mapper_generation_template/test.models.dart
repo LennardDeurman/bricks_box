@@ -1,13 +1,25 @@
 /// Corresponding test files for mapper_generation_test.dart
 
+import 'package:json_annotation/json_annotation.dart';
+
+part 'test.models.g.dart';
+
+@JsonSerializable()
 class MirrorTestChild {
+  @JsonKey(name: 'id')
   final String id;
   const MirrorTestChild({required this.id});
+
+  Map<String, dynamic> toJson() => _$MirrorTestChildToJson(this);
 }
 
+@JsonSerializable()
 class MirrorTestChildEntity {
+  @JsonKey(name: 'id')
   final String id;
   const MirrorTestChildEntity({required this.id});
+
+  Map<String, dynamic> toJson() => _$MirrorTestChildEntityToJson(this);
 }
 
 class MirrorTest {
