@@ -155,7 +155,7 @@ void main() {
     }
   });
 
-  test('Make mapper template', () {
+  /*test('Make mapper template', () {
     //TODO:
     final testFileBuffer = StringBuffer();
     testFileBuffer.writeln("import 'dart:convert';");
@@ -196,5 +196,5 @@ void main() {
 
     final output = testFileBuffer.toString();
     print(output);
-  });
+  }); */
 }

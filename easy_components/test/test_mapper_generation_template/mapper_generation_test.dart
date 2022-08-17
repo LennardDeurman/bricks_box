@@ -89,7 +89,9 @@ Map<String, dynamic> _mk(
           output = '$name.map((item) => item.to$typeName()).toList()';
         }
 
-        unknownTypes.add(inputMirror.type.typeArguments.first.reflectedType.toString().pascalCase);
+        unknownTypes.add(inputMirror.type.typeArguments.first.reflectedType
+            .toString()
+            .pascalCase);
       } else {
         final typeName = mirror.type.reflectedType.toString().pascalCase;
 
