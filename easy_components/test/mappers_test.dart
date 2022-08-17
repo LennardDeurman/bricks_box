@@ -38,7 +38,8 @@ void main() {
 
   test('Initialize mapper generator', () async {
     final mapperGenerator = MapperGenerator(mockConfigMap);
-    final conversionEntries = mapperGenerator.yamlMapToConversionEntries(mockObjectsMap);
+    final conversionEntries =
+        mapperGenerator.yamlMapToConversionEntries(mockObjectsMap);
     final outputMap = Map.fromEntries(conversionEntries);
 
     for (final inputEntry in mockEntries) {
@@ -46,7 +47,8 @@ void main() {
         conversionEntries,
         containsAll(
           mockEntries.map(
-            (e) => TypeMatcher<MapEntry>().having((entry) => entry.key, 'key', e.key)
+            (e) => TypeMatcher<MapEntry>()
+                .having((entry) => entry.key, 'key', e.key)
               ..having(
                 (entry) => e.value,
                 'value',
@@ -59,7 +61,12 @@ void main() {
 
     expect(
       outputMap.keys,
-      ['mirror_test', 'mirror_test_child', 'mirror_test_entity', 'mirror_test_child_entity'],
+      [
+        'mirror_test',
+        'mirror_test_child',
+        'mirror_test_entity',
+        'mirror_test_child_entity'
+      ],
     );
     expect(outputMap.values, [
       ['mirror_test_entity'],
@@ -71,14 +78,20 @@ void main() {
 
   test('Generate import lines', () {
     final mapperGenerator = MapperGenerator(mockConfigMap);
-    final imports = mapperGenerator.generateImportLines(['mirror_test', 'mirror_test_child']);
+    final imports = mapperGenerator
+        .generateImportLines(['mirror_test', 'mirror_test_child']);
     expect(imports, "import 'mirror_test';\nimport 'mirror_test_child';\n");
   });
 
   test('Parse classes', () {
     final mapperGenerator = MapperGenerator(mockConfigMap);
     final classes = mapperGenerator.parseClasses(mockEntries);
-    expect(classes, ['mirror_test', 'mirror_test_child', 'mirror_test_entity', 'mirror_test_child_entity']);
+    expect(classes, [
+      'mirror_test',
+      'mirror_test_child',
+      'mirror_test_entity',
+      'mirror_test_child_entity'
+    ]);
   });
 
   //Generate code lines
@@ -96,7 +109,8 @@ void main() {
 
   test('Generate export contents', () {
     final mapperGenerator = MapperGenerator(mockConfigMap);
-    final imports = mapperGenerator.generateExportContents({'mirror_test', 'mirror_test_entity'});
+    final imports = mapperGenerator
+        .generateExportContents({'mirror_test', 'mirror_test_entity'});
     expect(
       imports,
       "export 'mirror_test_mapper.dart';\n"
@@ -106,27 +120,30 @@ void main() {
 
   test('Create mapper code block', () {
     final mapperGenerator = MapperGenerator(mockConfigMap);
-    final res = mapperGenerator.createMapperCodeBlock(conversionClass: 'Mirror', body: 'id: id');
+    final res = mapperGenerator.createMapperCodeBlock(
+        conversionClass: 'Mirror', body: 'id: id');
     expect(res, 'Mirror toMirror() {\nreturn Mirror(id: id);\n}');
   });
 
   test('Create custom import classes', () {
     final mapperGenerator = MapperGenerator(mockConfigMap);
-    final customImport =
-        mapperGenerator.createCustomClassImports(['mirror_test_child', 'mirror_test'], {'mirror_test'});
+    final customImport = mapperGenerator.createCustomClassImports(
+        ['mirror_test_child', 'mirror_test'], {'mirror_test'});
     expect(customImport, "import 'mirror_test_mapper.dart';");
   });
 
   test('Convert to single pair', () {
     final mapperGenerator = MapperGenerator(mockConfigMap);
-    final singleEntries = mapperGenerator.stripEntriesToSingleConversionPairs(mockEntries);
+    final singleEntries =
+        mapperGenerator.stripEntriesToSingleConversionPairs(mockEntries);
 
     for (final inputEntry in mockSingleEntries) {
       expect(
         singleEntries,
         containsAll(
           mockSingleEntries.map(
-            (e) => TypeMatcher<MapEntry>().having((entry) => entry.key, 'key', e.key)
+            (e) => TypeMatcher<MapEntry>()
+                .having((entry) => entry.key, 'key', e.key)
               ..having(
                 (entry) => e.value,
                 'value',
@@ -161,13 +178,15 @@ void main() {
         final toClassName = element.pascalCase;
         final buffer = StringBuffer();
         buffer.writeln("test('from:$fromClassName to:$toClassName', () {");
-        buffer.writeln('expect(jsonEncode($variableName), jsonEncode($variableName.to$toClassName()));');
+        buffer.writeln(
+            'expect(jsonEncode($variableName), jsonEncode($variableName.to$toClassName()));');
         buffer.writeln('});');
 
         testBodies.add(buffer.toString());
       }
 
-      final groupBody = "group('Conversions for $mapperName', () {\n${testBodies.join('\n\n')}});";
+      final groupBody =
+          "group('Conversions for $mapperName', () {\n${testBodies.join('\n\n')}});";
       groupBlocksBuffer.write(groupBody);
       groupBlocksBuffer.writeln('');
       groupBlocksBuffer.writeln('');

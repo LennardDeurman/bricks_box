@@ -20,14 +20,16 @@ void main() {
       final contents = await readContents(reflectType(className));
       return MapEntry(className.toString(), contents);
     }).toList();
-    
+
     final classEntries = await Future.wait(items);
     final classContents = Map.fromEntries(classEntries);
-    
+
     final map = <String, dynamic>{};
 
-    map['MirrorTestEntity:MirrorTest'] = _mk(MirrorTestEntity, MirrorTest, classContents);
-    map['MirrorTestChildEntity:MirrorTestChild'] = _mk(MirrorTestChildEntity, MirrorTestChild, classContents);
+    map['MirrorTestEntity:MirrorTest'] =
+        _mk(MirrorTestEntity, MirrorTest, classContents);
+    map['MirrorTestChildEntity:MirrorTestChild'] =
+        _mk(MirrorTestChildEntity, MirrorTestChild, classContents);
 
     await File('output.json').writeAsString(jsonEncode(map));
 
@@ -44,7 +46,8 @@ Future<String?> readContents(TypeMirror mirror) async {
   return null;
 }
 
-Map<String, dynamic> _mk(Type from, Type to, Map<String, String?> classContents) {
+Map<String, dynamic> _mk(
+    Type from, Type to, Map<String, String?> classContents) {
   final fromTypeMirror = reflectClass(from);
 
   final inputClassParameters = _getConstructorParameters(fromTypeMirror);
@@ -52,15 +55,18 @@ Map<String, dynamic> _mk(Type from, Type to, Map<String, String?> classContents)
 
   final fieldAssignations = <String>[];
   final List<String> unknownTypes = [];
-  
-  final classContent = classContents.containsKey(from.toString()) ? classContents[from.toString()] : null;
+
+  final classContent = classContents.containsKey(from.toString())
+      ? classContents[from.toString()]
+      : null;
 
   for (ParameterMirror mirror in outputClassParameters) {
     final name = MirrorSystem.getName(mirror.simpleName);
-    final elements = inputClassParameters.where((element) => element.simpleName == mirror.simpleName);
+    final elements = inputClassParameters
+        .where((element) => element.simpleName == mirror.simpleName);
 
     var output = 'null';
-    
+
     bool isOptional = false;
 
     if (classContent != null) {
@@ -83,7 +89,7 @@ Map<String, dynamic> _mk(Type from, Type to, Map<String, String?> classContents)
           output = '$name.map((item) => item.to$typeName()).toList()';
         }
 
-        unknownTypes.add(typeName);
+        unknownTypes.add(inputMirror.type.typeArguments.first.reflectedType.toString().pascalCase);
       } else {
         final typeName = mirror.type.reflectedType.toString().pascalCase;
 
@@ -93,7 +99,7 @@ Map<String, dynamic> _mk(Type from, Type to, Map<String, String?> classContents)
           output = '$name.to$typeName()';
         }
 
-        unknownTypes.add(typeName);
+        unknownTypes.add(inputMirror.type.reflectedType.toString().pascalCase);
       }
     }
 
@@ -118,6 +124,7 @@ List<ParameterMirror> _getConstructorParameters(ClassMirror info) {
     ),
   );
 
-  final constructor = constructors.firstWhere((element) => element is MethodMirror) as MethodMirror;
+  final constructor = constructors
+      .firstWhere((element) => element is MethodMirror) as MethodMirror;
   return constructor.parameters;
 }
