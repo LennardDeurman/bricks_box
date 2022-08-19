@@ -5,7 +5,7 @@ import 'builder/model_builder.dart';
 import 'map_extension.dart';
 import 'constants/brick_arguments.dart';
 import 'constants/global.dart';
-import 'mapper_generator.dart';
+import 'objects_mapper/mapper_generator.dart';
 import 'yaml_loader.dart';
 
 void main(List<String> arguments) async {

@@ -4,7 +4,7 @@ import 'dart:mirrors';
 import 'package:recase/recase.dart';
 import 'package:test/test.dart';
 
-import 'test.models.dart';
+import 'dependencies/test.models.dart';
 
 /// This is a basic test for the template in mason which cannot be tested itself
 /// Make sure it conforms with the template in templates/mapper_generator/mapper_generator.dart

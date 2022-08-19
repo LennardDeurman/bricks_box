@@ -5,8 +5,8 @@ import 'package:mason/mason.dart';
 import 'package:recase/recase.dart';
 import 'package:yaml/yaml.dart';
 
-import 'constants/brick_arguments.dart';
-import 'map_extension.dart';
+import '../constants/brick_arguments.dart';
+import '../map_extension.dart';
 
 class MapperConfig {
   late final List<String> imports;

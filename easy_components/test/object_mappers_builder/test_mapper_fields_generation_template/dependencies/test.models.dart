@@ -1,4 +1,4 @@
-/// Corresponding test files for mapper_generation_test.dart
+/// Corresponding test files for mapper_field_generation_test.dart
 
 import 'package:json_annotation/json_annotation.dart';
 
